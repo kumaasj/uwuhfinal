@@ -1,0 +1,98 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+local function optimizeWorld()
+    local terrain = workspace:FindFirstChild('Terrain')
+    terrain.WaterTransparency = 0
+    terrain.WaterWaveSize = 0
+    terrain.WaterWaveSpeed = 0
+    terrain.WaterReflectance = 0
+    if terrain:FindFirstChild('Clouds') then terrain.Clouds:Destroy() end
+    game.Lighting.GlobalShadows = false
+    game.Lighting.FogEnd = 999999999
+
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA('Part') or part:IsA('UnionOperation') or part:IsA('MeshPart') or part:IsA('CornerWedgePart') or part:IsA('TrussPart') then
+            part.Transparency = 1
+        elseif part:IsA('Decal') then
+            part.Transparency = 1
+        elseif part:IsA('ParticleEmitter') or part:IsA('Trail') then
+            part.Lifetime = NumberRange.new(0)
+        elseif part:IsA('Explosion') then
+            part.BlastPressure = 1
+            part.BlastRadius = 1
+        end
+    end
+
+    workspace.DescendantAdded:Connect(function(part)
+        if part:IsA('Part') or part:IsA('UnionOperation') or part:IsA('MeshPart') or part:IsA('CornerWedgePart') or part:IsA('TrussPart') then
+            part.Transparency = 1
+        elseif part:IsA('Decal') then
+            part.Transparency = 1
+        elseif part:IsA('ParticleEmitter') or part:IsA('Trail') then
+            part.Lifetime = NumberRange.new(0)
+        elseif part:IsA('Explosion') then
+            part.BlastPressure = 1
+            part.BlastRadius = 1
+        end
+    end)
+
+    for _, part in pairs(game.Lighting:GetDescendants()) do
+        if part:IsA('BlurEffect') or part:IsA('SunRaysEffect') or part:IsA('ColorCorrectionEffect') or part:IsA('BloomEffect') or part:IsA('DepthOfFieldEffect') then
+            part.Enabled = false
+        end
+    end
+
+    game.Lighting.DescendantAdded:Connect(function(part)
+        if part:IsA('BlurEffect') or part:IsA('SunRaysEffect') or part:IsA('ColorCorrectionEffect') or part:IsA('BloomEffect') or part:IsA('DepthOfFieldEffect') then
+            part.Enabled = false
+        end
+    end)
+end
+
+optimizeWorld()
+
+local services = setmetatable({}, {
+    __index = function(_, idx) return game:GetService(idx) end
+})
+
+if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092) return end
+
+local waitTime = 30
+local chatMsgs = {
+     '🔴 🆆🅰🅽🆃 🆈🅾🆄🆁 🅳🆁🅴🅰🅼 🅲🅰🆁🆂 🅵🅾🆁 🅲🅷🅴🅰🅿? 🆅🅸🆂🅸🆃 🅹🅱🅿🆁🅾,🆂🆃🅾🆁🅴',
+     '🔴 🅱🆄🆈 🛒 🅰🅽🆈 🅲🅰🆁 🆈🅾🆄 🆆🅰🅽🆃! 🅹🅾🅸🅽 🅹🅱🅿🆁🅾,🆂🆃🅾🆁🅴',
+     '🔴 🆂🅰🆅🅴 🆈🅾🆄🆁 ⌛🆃🅸🅼🅴 🅰🅽🅳 🆈🅾🆄🆁 🆆🅰🅻🅻🅴🆃! 🆅🅸🆂🅸🆃 🅹🅱🅿🆁🅾,🆂🆃🅾🆁🅴',
+     '🔴 🅱🆄🆈 🅰🅽🆈 🚙🅸🆃🅴🅼 🆈🅾🆄 🆆🅰🅽🆃! 🅶🅾 🅹🅱🅿🆁🅾,🆂🆃🅾🆁🅴',
+     '🔴 🅸 🅹🆄🆂🆃 🆆🅾🅽 🅰 🚗🆃🅾🆁🅿 🅵🅾🆁 🅵🆁🅴🅴! 🆅🅸🆂🅸🆃 🅹🅱🅿🆁🅾,🆂🆃🅾🆁🅴',
+}
+
+coroutine.wrap(function()
+    local index = 1
+    repeat
+        services.TextChatService.TextChannels['RBXGeneral']:SendAsync(chatMsgs[index], 'All')
+        index = index + 1
+        if index > 5 then
+            index = 1
+        end
+        task.wait(4)
+    until false
+end)()
+
+task.wait(waitTime)
+
+local plr = services.Players.LocalPlayer
+local servrs = {}
+local site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100'))
+
+repeat
+    wait(8)
+    for _, srvr in pairs(site.data) do
+        if not srvr.maxPlayers or not srvr.playing then continue end
+        if srvr.maxPlayers < srvr.playing + 3 then continue end
+        table.insert(servrs, srvr.id)
+        if #servrs >= 20 then break end
+    end
+    if not site.nextPageCursor then break end
+    site = servs.http:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
+until #servrs >= 20 or not site.nextPageCursor
+
+services.TeleportService:TeleportToPlaceInstance(game.placeId, servrs[math.random(1, #servrs)])
