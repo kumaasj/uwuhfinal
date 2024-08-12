@@ -90,10 +90,10 @@ repeat
         if not srvr.maxPlayers or not srvr.playing then continue end
         if srvr.maxPlayers < srvr.playing + 3 then continue end
         table.insert(servrs, srvr.id)
-        if #servrs >= 20 then break end
+        if #servrs >= 15 then break end
     end
     if not site.nextPageCursor then break end
     site = servs.http:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
-until #servrs >= 20 or not site.nextPageCursor
+until #servrs >= 15 or not site.nextPageCursor
 
 services.TeleportService:TeleportToPlaceInstance(game.placeId, servrs[math.random(1, #servrs)])
