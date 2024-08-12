@@ -56,7 +56,7 @@ local services = setmetatable({}, {
 
 if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092) return end
 
-local waitTime = 18
+local waitTime = 16
 local chatMsgs = {
      '🔴🅦🅐🅝🅣 🅨🅞🅤 🅓🅡🅔🅐🅜 🅒🅐🅡🅢 🅕🅞🅡 🅒🅗🅔🅐🅟 | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
      '🔴🅑🅤🅨 🅐🅝🅨 🅘🅣🅔🅜 🅨🅞🅤 🅦🅐🅝🅣 | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
@@ -90,10 +90,10 @@ repeat
         if not srvr.maxPlayers or not srvr.playing then continue end
         if srvr.maxPlayers < srvr.playing + 3 then continue end
         table.insert(servrs, srvr.id)
-        if #servrs >= 15 then break end
+        if #servrs >= 10 then break end
     end
     if not site.nextPageCursor then break end
     site = servs.http:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
-until #servrs >= 15 or not site.nextPageCursor
+until #servrs >= 10 or not site.nextPageCursor
 
 services.TeleportService:TeleportToPlaceInstance(game.placeId, servrs[math.random(1, #servrs)])
