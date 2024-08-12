@@ -58,12 +58,11 @@ if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092)
 
 local waitTime = 18
 local chatMsgs = {
-     '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-     '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-     '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-     '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-     '🔴I ᴊᴜsᴛ ᴡᴏɴ ᴀ ᴛᴏʀᴘ | VISIT ᴊʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-
+     '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+     '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+     '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+     '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+     '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
 }
 
 coroutine.wrap(function()
@@ -90,10 +89,10 @@ repeat
         if not srvr.maxPlayers or not srvr.playing then continue end
         if srvr.maxPlayers < srvr.playing + 3 then continue end
         table.insert(servrs, srvr.id)
-        if #servrs >= 20 then break end
+        if #servrs >= 10 then break end
     end
     if not site.nextPageCursor then break end
     site = servs.http:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
-until #servrs >= 20 or not site.nextPageCursor
+until #servrs >= 10 or not site.nextPageCursor
 
 services.TeleportService:TeleportToPlaceInstance(game.placeId, servrs[math.random(1, #servrs)])
