@@ -1,0 +1,112 @@
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+local function optimizeWorld()
+    local terrain = workspace:FindFirstChild('Terrain')
+    terrain.WaterTransparency = 0
+    terrain.WaterWaveSize = 0
+    terrain.WaterWaveSpeed = 0
+    terrain.WaterReflectance = 0
+    if terrain:FindFirstChild('Clouds') then terrain.Clouds:Destroy() end
+    game.Lighting.GlobalShadows = false
+    game.Lighting.FogEnd = 999999999
+
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA('Part') or part:IsA('UnionOperation') or part:IsA('MeshPart') or part:IsA('CornerWedgePart') or part:IsA('TrussPart') then
+            part.Transparency = 1
+        elseif part:IsA('Decal') then
+            part.Transparency = 1
+        elseif part:IsA('ParticleEmitter') or part:IsA('Trail') then
+            part.Lifetime = NumberRange.new(0)
+        elseif part:IsA('Explosion') then
+            part.BlastPressure = 1
+            part.BlastRadius = 1
+        end
+    end
+
+    workspace.DescendantAdded:Connect(function(part)
+        if part:IsA('Part') or part:IsA('UnionOperation') or part:IsA('MeshPart') or part:IsA('CornerWedgePart') or part:IsA('TrussPart') then
+            part.Transparency = 1
+        elseif part:IsA('Decal') then
+            part.Transparency = 1
+        elseif part:IsA('ParticleEmitter') or part:IsA('Trail') then
+            part.Lifetime = NumberRange.new(0)
+        elseif part:IsA('Explosion') then
+            part.BlastPressure = 1
+            part.BlastRadius = 1
+        end
+    end)
+
+    for _, part in pairs(game.Lighting:GetDescendants()) do
+        if part:IsA('BlurEffect') or part:IsA('SunRaysEffect') or part:IsA('ColorCorrectionEffect') or part:IsA('BloomEffect') or part:IsA('DepthOfFieldEffect') then
+            part.Enabled = false
+        end
+    end
+
+    game.Lighting.DescendantAdded:Connect(function(part)
+        if part:IsA('BlurEffect') or part:IsA('SunRaysEffect') or part:IsA('ColorCorrectionEffect') or part:IsA('BloomEffect') or part:IsA('DepthOfFieldEffect') then
+            part.Enabled = false
+        end
+    end)
+end
+
+optimizeWorld()
+
+local services = setmetatable({}, {
+    __index = function(_, idx) return game:GetService(idx) end
+})
+
+if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092) return end
+
+local waitTime = 18
+local chatMsgs = {
+    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+}
+
+coroutine.wrap(function()
+    local index = 1
+    repeat
+        services.TextChatService.TextChannels['RBXGeneral']:SendAsync(chatMsgs[index], 'All')
+        index = index + 1
+        if index > 5 then
+            index = 1
+        end
+        task.wait(2)
+    until false
+end)()
+
+task.wait(waitTime)
+
+local plr = services.Players.LocalPlayer
+local servrs = {}
+local joinedServers = {} -- To keep track of joined servers
+local site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100'))
+
+repeat
+    wait(5)
+    for _, srvr in pairs(site.data) do
+        if not srvr.maxPlayers or not srvr.playing then continue end
+        if srvr.maxPlayers < srvr.playing + 3 then continue end
+        if joinedServers[srvr.id] then continue end -- Skip if the server is already joined by another account
+        table.insert(servrs, srvr.id)
+        joinedServers[srvr.id] = true -- Mark this server as joined
+        if #servrs >= 10 then break end
+    end
+    if not site.nextPageCursor then break end
+    site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
+until #servrs >= 10 or not site.nextPageCursor
+
+if #servrs > 0 then
+    local selectedServer = servrs[math.random(1, #servrs)]
+    services.TeleportService:TeleportToPlaceInstance(game.placeId, selectedServer)
+    
+    -- When player leaves, remove the server from the list
+    plr.AncestryChanged:Connect(function()
+        if not plr:IsDescendantOf(game) then
+            joinedServers[selectedServer] = nil
+        end
+    end)
+end
