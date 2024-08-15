@@ -1,0 +1,69 @@
+wait(1)
+if game.PlaceId == 606849621 then
+    game:GetService("TeleportService"):Teleport(9780994092, game:GetService('Players').LocalPlayer)
+end
+
+local TextChatService = game:GetService('TextChatService')
+local ChatSystem = TextChatService.TextChannels['RBXGeneral']
+local msg_tbl = {
+    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+}
+
+coroutine.wrap(function()
+    local index = 1
+    repeat
+        ChatSystem:SendAsync(msg_tbl[index])
+        index = index + 1
+        if index > #msg_tbl then
+            index = 1
+        end
+        task.wait(2)
+    until false
+end)()
+
+task.wait(24)
+
+local Player = game:GetService('Players').LocalPlayer
+local Http = game:GetService("HttpService")
+local TPS = game:GetService("TeleportService")
+local Api = "https://games.roblox.com/v1/games/"
+
+local _place, _id = game.PlaceId, game.JobId
+local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=10"
+
+local joinedServers = {} -- Table to track servers already joined
+
+function ListServers(cursor)
+    local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+    return Http:JSONDecode(Raw)
+end
+
+task.spawn(function()
+    while task.wait(5) do
+        local Servers = ListServers()
+        local Server
+        -- Loop through servers to find one that hasn't been joined and has more than 5 members
+        for _, srv in pairs(Servers.data) do
+            if srv.playing > 5 and not joinedServers[srv.id] then
+                Server = srv
+                break
+            end
+        end
+
+        if Server then
+            joinedServers[Server.id] = true -- Mark the server as joined
+            TPS:TeleportToPlaceInstance(_place, Server.id, Player)
+            
+            -- When player leaves, remove the server from the list
+            Player.AncestryChanged:Connect(function()
+                if not Player:IsDescendantOf(game) then
+                    joinedServers[Server.id] = nil
+                end
+            end)
+        end
+    end
+end)
