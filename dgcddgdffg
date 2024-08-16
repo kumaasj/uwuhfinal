@@ -57,7 +57,7 @@ local services = setmetatable({}, {
 
 if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092) return end
 
-local waitTime = 18
+local waitTime = 22
 local chatMsgs = {
     '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀs ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
     '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
@@ -93,11 +93,11 @@ repeat
         if joinedServers[srvr.id] then continue end -- Skip if the server is already joined by another account
         table.insert(servrs, srvr.id)
         joinedServers[srvr.id] = true -- Mark this server as joined
-        if #servrs >= 10 then break end
+        if #servrs >= 5 then break end
     end
     if not site.nextPageCursor then break end
     site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
-until #servrs >= 10 or not site.nextPageCursor
+until #servrs >= 5 or not site.nextPageCursor
 
 if #servrs > 0 then
     local selectedServer = servrs[math.random(1, #servrs)]
