@@ -1,4 +1,4 @@
-if not game:IsLoaded() then game.Loaded:Wait() end
+if not game:IsLoaded() then game.Loaded:Wait(3) end
 
 local function optimizeWorld()
     local terrain = workspace:FindFirstChild('Terrain')
@@ -57,13 +57,13 @@ local services = setmetatable({}, {
 
 if game.placeId ~= 9780994092 then services.TeleportService:Teleport(9780994092) return end
 
-local waitTime = 18
+local waitTime = 25
 local chatMsgs = {
-    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀs ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ᴡᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | Gᴏ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ᴡᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | Vɪsɪᴛ Jʙsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
 }
 
 coroutine.wrap(function()
@@ -93,7 +93,7 @@ repeat
         if joinedServers[srvr.id] then continue end -- Skip if the server is already joined by another account
         table.insert(servrs, srvr.id)
         joinedServers[srvr.id] = true -- Mark this server as joined
-        if #servrs >= 10 then break end
+        if #servrs >= 5 then break end
     end
     if not site.nextPageCursor then break end
     site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
