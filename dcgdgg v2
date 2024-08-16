@@ -97,7 +97,7 @@ repeat
     end
     if not site.nextPageCursor then break end
     site = services.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/'..game.placeId..'/servers/Public?limit=100&cursor='..site.nextPageCursor))
-until #servrs >= 10 or not site.nextPageCursor
+until #servrs >= 5 or not site.nextPageCursor
 
 if #servrs > 0 then
     local selectedServer = servrs[math.random(1, #servrs)]
