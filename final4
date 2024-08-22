@@ -75,7 +75,7 @@ coroutine.wrap(function()
         if index > #chatMsgs then
             index = 1
         end
-        task.wait(1.5)
+        task.wait(2)
     until false
 end)()
 
