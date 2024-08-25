@@ -60,11 +60,11 @@ local services = setmetatable({}, {
 
 local waitTime = 20
 local chatMsgs = {
-    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
-    '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs.sᴛᴏʀᴇ',
+    '🔴ᴡᴀɴᴛ ʏᴏᴜʀ ᴅʀᴇᴀᴍ ᴄᴀʀ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs,sᴛᴏʀᴇ',
+    '🔴ʙᴜʏ ᴀɴʏ ɪᴛᴇᴍ ʏᴏᴜ ᴡᴀɴᴛ | VISIT JBsᴇʟʟᴇʀs,sᴛᴏʀᴇ',
+    '🔴Sᴀᴠᴇ ʏᴏᴜʀ ᴛɪᴍᴇ ᴀɴᴅ ʏᴏᴜʀ ᴡᴀʟʟᴇᴛ | VISIT JBsᴇʟʟᴇʀs,sᴛᴏʀᴇ',
+    '🔴Wᴇ ᴀʀᴇ ᴛʜᴇ ᴄʜᴇᴀᴘᴇsᴛ ᴀɴᴅ ᴛʜᴇ ʙᴇsᴛ  | GO JBsᴇʟʟᴇʀs,sᴛᴏʀᴇ',
+    '🔴Wᴀɴᴛ ᴛʜᴇ ʙᴇsᴛ ꜰᴏʀ ᴄʜᴇᴀᴘ﹖ | VISIT JBsᴇʟʟᴇʀs,sᴛᴏʀᴇ',
 }
 
 coroutine.wrap(function()
